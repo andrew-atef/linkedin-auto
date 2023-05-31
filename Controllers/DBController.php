@@ -1,22 +1,25 @@
 <?php
+require_once('../vendor/autoload.php');
+
+// load .env file
+$dotenv = Dotenv\Dotenv::createImmutable("../");
+$dotenv->load();
+
 
 class DBController
 {
-
-    public $dbHost = "localhost";
-    public $dbUser = "root";
-    public $dbPassword = "";
-    public $dbName = "linkedin-auto";
+    public $dbHost;
+    public $dbUser;
+    public $dbPassword;
+    public $dbName;
     public $connection;
 
     public function openConnection()
     {
-
-        // $this->dbHost = getenv('DB_HOST');
-        // $this->dbUser = getenv('DB_USERNAME');
-        // $this->dbPassword = getenv('DB_PASSWORD');
-        // $this->dbName = getenv('DB_NAME');
-
+        $this->dbHost = $_ENV['DB_HOST'];
+        $this->dbUser = $_ENV['DB_USERNAME'];
+        $this->dbPassword = $_ENV['DB_PASSWORD'];
+        $this->dbName = $_ENV['DB_NAME'];
 
         $this->connection = new mysqli($this->dbHost, $this->dbUser, $this->dbPassword, $this->dbName);
         if ($this->connection->connect_error) {

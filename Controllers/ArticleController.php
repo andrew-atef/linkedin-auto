@@ -19,20 +19,24 @@ class ArticleController
             $article = new Article(1, $title, $description, $link);
         }
 
-
+        // add ! for testing if the article was duplicate
         if ($this->saveArticle($article)) {
             $aiController = new AiController;
-            return $aiController->paraphraseArticle($article);
+            $paraphrase = $aiController->paraphraseArticle($article);
+
+            $article->setParaphrase($paraphrase);
+            
+            return $paraphrase;
         } else {
             return "duplicate contacts ( article )";
         }
     }
 
-    public function isExist(Article $article)
+    private function isExist(Article $article)
     {
         $this->db = new DBController;
         if ($this->db->openConnection()) {
-            $query = "select * FROM articles WHERE title = '" . $article->getTitle() . "'";
+            $query = "select * FROM articles WHERE link = '" . $article->getLink() . "'";
             return $this->db->select($query);
         } else {
             echo "Error in Database Connection";
@@ -40,11 +44,11 @@ class ArticleController
         }
     }
 
-    public function insertArticle(Article $article)
+    private function insertArticle(Article $article)
     {
         $this->db = new DBController;
         if ($this->db->openConnection()) {
-            $query = "insert INTO articles VALUES ('','" . $article->getTitle() . "','" . $article->getDesc() . "','" . $article->getLink() . "')";
+            $query = "insert INTO articles VALUES ('','" . addslashes($article->getTitle()) . "','" . addslashes($article->getDesc()) . "','" . $article->getLink() . "')";
             $result = $this->db->insert($query);
             if ($result != false) {
                 $this->db->closeConnection();
@@ -60,7 +64,7 @@ class ArticleController
     }
 
 
-    public function saveArticle(Article $article)
+    private function saveArticle(Article $article)
     {
         if (!$this->isExist($article)) {
             try {

@@ -21,6 +21,11 @@ class DBController
         $this->dbPassword = $_ENV['DB_PASSWORD'];
         $this->dbName = $_ENV['DB_NAME'];
 
+        // $this->dbHost = "localhost";
+        // $this->dbUser = "root";
+        // $this->dbPassword = "";
+        // $this->dbName = "linkedin-auto";
+
         $this->connection = new mysqli($this->dbHost, $this->dbUser, $this->dbPassword, $this->dbName);
         if ($this->connection->connect_error) {
             echo " Error in Connection : " . $this->connection->connect_error;
@@ -49,6 +54,7 @@ class DBController
             return $result->fetch_all(MYSQLI_ASSOC);
         }
     }
+
     public function insert($qry)
     {
         $result = $this->connection->query($qry);

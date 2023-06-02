@@ -2,6 +2,7 @@
 
 require_once 'DBController.php';
 require_once 'AiController.php';
+require_once 'LinkedinController.php';
 require_once '../Models/Article.php';
 
 class ArticleController
@@ -10,23 +11,36 @@ class ArticleController
 
     public function fetchArticle()
     {
-        $rss_feed = simplexml_load_file("https://tech.hindustantimes.com/rss/tech/news");
+        $rss_feed = simplexml_load_file("https://authenticjobs.com/?feed=job_feed");
+        // $rss_feed = simplexml_load_file("https://wuzzuf.net/feeds/all-jobs.xml");
+        // $rss_feed = simplexml_load_file("https://tech.hindustantimes.com/rss/tech/news");
         if (!empty($rss_feed)) {
-            $article = $rss_feed->channel->item[0];
+            $random = rand(0, count($rss_feed->channel->item));
+
+            $article = $rss_feed->channel->item[$random];
             $title = $article->title;
             $description = $article->description;
             $link = $article->link;
             $article = new Article(1, $title, $description, $link);
         }
 
+        // return $article->link;
         // add ! for testing if the article was duplicate
         if ($this->saveArticle($article)) {
             $aiController = new AiController;
-            $paraphrase = $aiController->paraphraseArticle($article);
+            $linkedin = new LinkedinController;
 
-            $article->setParaphrase($paraphrase);
-            
-            return $paraphrase;
+            try {
+                $paraphrase = $aiController->paraphraseArticle($article);
+                $article->setParaphrase($paraphrase);
+
+                $result = $linkedin->makePost($article);
+
+                return $result;
+            } catch (\Throwable $th) {
+                return $th;
+            }
+
         } else {
             return "duplicate contacts ( article )";
         }
@@ -48,7 +62,7 @@ class ArticleController
     {
         $this->db = new DBController;
         if ($this->db->openConnection()) {
-            $query = "insert INTO articles VALUES ('','" . addslashes($article->getTitle()) . "','" . addslashes($article->getDesc()) . "','" . $article->getLink() . "')";
+            $query = "insert INTO articles VALUES ('','" . addslashes($article->getTitle()) . "','" . addslashes($article->getDesc()) . "','" . addslashes($article->getLink()) . "')";
             $result = $this->db->insert($query);
             if ($result != false) {
                 $this->db->closeConnection();
@@ -69,8 +83,9 @@ class ArticleController
         if (!$this->isExist($article)) {
             try {
                 $this->insertArticle($article);
+                return true;
             } catch (\Throwable $th) {
-                return $th;
+                return false;
             }
         }
     }

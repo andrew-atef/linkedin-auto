@@ -3,7 +3,15 @@ require_once "../Controllers/ArticleController.php";
 
 $articleController = new ArticleController();
 
-echo $articleController->fetchArticle();
+while (true) {
+    echo $articleController->fetchArticle();
+
+    $interval = mt_rand(300, 1800);
+
+    // Sleep for the generated interval
+    sleep($interval);
+}
+
 // print_r($articleController->fetchArticle());
 
 

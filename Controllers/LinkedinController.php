@@ -18,7 +18,7 @@ class LinkedinController
         'Content-Type' => 'application/json',
         ];
         $body = '{
-        "owner": "urn:li:person:' . $_ENV['LINKEDIN_KEY'] . '",
+        "owner": "urn:li:person:' . $_ENV['PERSON_ID'] . '",
         "subject": "' . $article->getParaphrase() . '",
         "text": {
             "text": "' . $article->getParaphrase() . " Apply: " . $article->getLink() . '"

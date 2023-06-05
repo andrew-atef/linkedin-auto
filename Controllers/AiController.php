@@ -12,15 +12,13 @@ $dotenv->load();
 
 class AiController
 {
+  
   public function paraphraseArticle(Article $article)
   {
 
     $text = "paraphrase this title and description as short tweet and add hashtags,  title: " . $article->getTitle() . " description: " . $article->getDesc() . ")";
     $result = $this->generate($text);
-    $start = strrpos($result,"<|assistant|>");
 
-    $result = substr($this->generate($text) , $start + strlen("<|assistant|>") );
-    
     return $result;
   }
 
@@ -30,15 +28,18 @@ class AiController
     $resultLoop = $this->sendReq($input);
 
 
-    
-    while(substr_count($resultLoop, "endoftext") <= 1){
+    while (substr_count($resultLoop, "endoftext") <= 1) {
       $resultLoop .= $this->sendReq($resultLoop);
       $result = $this->sendReq($resultLoop);
     }
+
+    $start = strrpos($result, "<|assistant|>");
+    $result = substr($this->generate($text), $start + strlen("<|assistant|>"));
+
     return $result;
   }
 
-  private function sendReq($input)
+  private function sendReq($input) // Huggingface API.
   {
     $client = new Client();
 

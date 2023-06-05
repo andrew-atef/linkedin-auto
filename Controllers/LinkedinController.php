@@ -35,6 +35,7 @@ class LinkedinController
         }';
         $request = new Request('POST', 'https://api.linkedin.com/v2/shares', $headers, $body);
         $res = $client->sendAsync($request)->wait();
+        
         return $res->getBody();
     }
 }

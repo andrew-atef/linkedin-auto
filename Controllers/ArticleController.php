@@ -24,7 +24,6 @@ class ArticleController
             $article = new Article(1, $title, $description, $link);
         }
 
-        // return $article->link;
         // add ! for testing if the article was duplicate
         if ($this->saveArticle($article)) {
             $aiController = new AiController;
@@ -40,7 +39,6 @@ class ArticleController
             } catch (\Throwable $th) {
                 return $th;
             }
-
         } else {
             return "duplicate contacts ( article )";
         }
@@ -89,4 +87,5 @@ class ArticleController
             }
         }
     }
+
 }

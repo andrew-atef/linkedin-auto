@@ -29,7 +29,7 @@ class Article
 
     public function getLink()
     {
-        return $this->link;
+        return addslashes($this->link);
     }
 
     public function getParaphrase()

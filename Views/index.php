@@ -1,14 +1,10 @@
 <?php 
 require_once "../Controllers/ArticleController.php";
 
+
+$interval = mt_rand(30, 100);
+sleep($interval);
 $articleController = new ArticleController();
 $art = $articleController->fetchArticle();
 print_r($art);
-echo $art;
-
-// while (true) {
-//     echo $articleController->fetchArticle();
-
-//     $interval = mt_rand(300, 1800);
-//     sleep($interval);
-// }
+// echo $art;

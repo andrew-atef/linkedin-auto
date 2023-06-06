@@ -15,20 +15,22 @@ class ArticleController
         // $rss_feed = simplexml_load_file("https://wuzzuf.net/feeds/all-jobs.xml");
         // $rss_feed = simplexml_load_file("https://tech.hindustantimes.com/rss/tech/news");
         if (!empty($rss_feed)) {
-            $random = rand(0, count($rss_feed->channel->item));
-
-            $article = $rss_feed->channel->item[$random];
-            $title = $article->title;
-            $description = $article->description;
-            $link = $article->link;
-            $article = new Article(1, $title, $description, $link);
+            try {
+                $random = rand(0, count($rss_feed->channel->item));
+                $article = $rss_feed->channel->item[$random];
+                $title = $article->title;
+                $description = $article->description;
+                $link = $article->link;
+                $article = new Article(1, $title, $description, $link);
+            } catch (\Throwable $th) {
+                return $th;
+            }
         }
 
         // add ! for testing if the article was duplicate
         if ($this->saveArticle($article)) {
             $aiController = new AiController;
             $linkedin = new LinkedinController;
-
             try {
                 $paraphrase = $aiController->paraphraseArticle($article);
                 $article->setParaphrase($paraphrase);
@@ -83,12 +85,8 @@ class ArticleController
                 $this->insertArticle($article);
                 return true;
             } catch (\Throwable $th) {
-                return false;
+                return $th;
             }
         }
-        else{
-            return false;
-        }
     }
-
 }

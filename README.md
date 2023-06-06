@@ -1,7 +1,7 @@
 
 # LinkedIn Auto
 
-LinkedIn Auto is a PHP project that allows you to automatically fetch articles from an RSS feed, paraphrase them using the Hugging Face interface API AI, and post the paraphrased articles on your LinkedIn account. This project simplifies the process of curating and sharing content on LinkedIn, saving you time and effort.
+LinkedIn Auto is a PHP project that allows you to automatically fetch Articles/Jobs from an RSS feed, paraphrase them using the Hugging Face interface API AI, and post the paraphrased articles on your LinkedIn account. This project simplifies the process of curating and sharing content on LinkedIn, saving you time and effort.
 
 
 ## Prerequisites

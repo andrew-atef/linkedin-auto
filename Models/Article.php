@@ -34,7 +34,7 @@ class Article
 
     public function getParaphrase()
     {
-        return $this->paraphrase;
+        return addslashes($this->paraphrase);
     }
 
     public function setParaphrase($paraphrase)

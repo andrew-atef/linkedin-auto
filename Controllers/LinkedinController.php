@@ -18,21 +18,38 @@ class LinkedinController
         'Content-Type' => 'application/json',
         ];
         $body = '{
-        "owner": "urn:li:person:' . $_ENV['PERSON_ID'] . '",
-        "subject": "' . $article->getParaphrase() . '",
-        "text": {
-            "text": "' . $article->getParaphrase() . " Apply: " . $article->getLink() . '"
-        },
-        "content": {
-            "contentEntities": [
-            {
-                "entity": "urn:li:digitalmediaAsset:D5622AQH33uOWtLy7Iw"
+            "owner": "urn:li:person:' . $_ENV['PERSON_ID'] . '",
+            "subject": "' . $article->getParaphrase() . '",
+            "text": {
+                "text": "' . $article->getParaphrase() . " Apply: " . $article->getLink() . '"
+            },
+            "content": {
+                "contentEntities": [
+                {
+                    "entity": "urn:li:digitalmediaAsset:D5622AQH33uOWtLy7Iw"
+                }
+                ],
+                "title": "' . $article->getParaphrase() . '",
+                "shareMediaCategory": "IMAGE"
             }
-            ],
-            "title": "' . $article->getParaphrase() . '",
-            "shareMediaCategory": "IMAGE"
-        }
-        }';
+            }';
+
+            // $body = '{
+            //     "owner": "urn:li:person:' . $_ENV['PERSON_ID'] . '",
+            //     "subject": "' . $article->getParaphrase() . '",
+            //     "text": {
+            //         "text": "' . $article->getParaphrase() . " Apply: " . $article->getLink() . '"
+            //     },
+            //     "content": {
+            //         "contentEntities": [
+            //         {
+            //             "entity": "urn:li:digitalmediaAsset:D5622AQH33uOWtLy7Iw"
+            //         }
+            //         ],
+            //         "title": "' . $article->getParaphrase() . '",
+            //         "shareMediaCategory": "IMAGE"
+            //     }
+            //     }';
         $request = new Request('POST', 'https://api.linkedin.com/v2/shares', $headers, $body);
         $res = $client->sendAsync($request)->wait();
         

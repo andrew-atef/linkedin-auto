@@ -86,6 +86,9 @@ class ArticleController
                 return false;
             }
         }
+        else{
+            return false;
+        }
     }
 
 }

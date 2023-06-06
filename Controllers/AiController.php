@@ -18,6 +18,8 @@ class AiController
 
     $text = "paraphrase this title and description as short tweet and add hashtags,  title: " . $article->getTitle() . " description: " . $article->getDesc() . ")";
     $result = $this->generate($text);
+    $start = strrpos($result, "<|assistant|>");
+    $result = substr($this->generate($text), $start + strlen("<|assistant|>"));
 
     return $result;
   }
@@ -33,9 +35,7 @@ class AiController
       $result = $this->sendReq($resultLoop);
     }
 
-    $start = strrpos($result, "<|assistant|>");
-    $result = substr($this->generate($text), $start + strlen("<|assistant|>"));
-
+   
     return $result;
   }
 

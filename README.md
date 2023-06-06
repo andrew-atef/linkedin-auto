@@ -14,19 +14,11 @@ Before using LinkedIn Auto, make sure you have the following:
 - LinkedIn API credentials (API key)
 
 
-
 ## How To Use it
 - change .env ( test ) file to .env only.
 - import linkedin-auto.sql database.
 - add your KEYs to .env file.
 - setup Cron Job to open Views/index.php every constant time ex.(200 milliseconds).
-
-Before using LinkedIn Auto, make sure you have the following:
-
-- PHP installed on your local machine or server
-- Composer package manager
-- Hugging Face API credentials (API key)
-- LinkedIn API credentials (API key)
 
 
 ## Acknowledgements
